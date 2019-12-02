@@ -30,6 +30,11 @@ const internals = {};
 
 describe('hpal', () => {
 
+    const normalize = (str) => {
+
+        return str && str.replace(/\\/g, '/').replace(RegExp(Os.EOL, 'g'), '\n');
+    };
+
     describe('CLI', () => {
 
         const rimraf = (file) => Util.promisify(Rimraf)(`${__dirname}/closet/${file}`, { disableGlob: true });
@@ -148,7 +153,7 @@ describe('hpal', () => {
 
                 expect(result.err).to.be.instanceof(DisplayError);
                 expect(result.output).to.equal('');
-                expect(result.errorOutput).to.contain('It\'s ambiguous which directory containing a .hc.js file to use: project-a/.hc.js, project-b/.hc.js');
+                expect(normalize(result.errorOutput)).to.contain('It\'s ambiguous which directory containing a .hc.js file to use: project-a/.hc.js, project-b/.hc.js');
                 expect(result.errorOutput.match(/,/g)).to.have.length(1);
             });
 
@@ -158,7 +163,7 @@ describe('hpal', () => {
 
                 expect(result1.err).to.be.instanceof(DisplayError);
                 expect(result1.output).to.equal('');
-                expect(result1.errorOutput).to.contain('It\'s ambiguous which directory containing a .hc.js file to use: ../project-a/.hc.js, ../project-b/.hc.js');
+                expect(normalize(result1.errorOutput)).to.contain('It\'s ambiguous which directory containing a .hc.js file to use: ../project-a/.hc.js, ../project-b/.hc.js');
                 expect(result1.errorOutput.match(/,/g)).to.have.length(1);
 
                 const OrigGlob = Glob.Glob;
@@ -184,7 +189,7 @@ describe('hpal', () => {
                 expect(Glob.Glob.notOriginal).to.not.exist();
                 expect(result2.err).to.be.instanceof(DisplayError);
                 expect(result2.output).to.equal('');
-                expect(result2.errorOutput).to.contain('It\'s ambiguous which directory containing a .hc.js file to use: ../project-b/.hc.js, ../project-a/.hc.js');
+                expect(normalize(result2.errorOutput)).to.contain('It\'s ambiguous which directory containing a .hc.js file to use: ../project-b/.hc.js, ../project-a/.hc.js');
                 expect(result2.errorOutput.match(/,/g)).to.have.length(1);
             });
 
@@ -197,7 +202,7 @@ describe('hpal', () => {
                 const result = await RunUtil.cli(['make', 'route'], 'ambiguous-hc-file/project-a');
 
                 expect(result.err).to.not.exist();
-                expect(result.output).to.contain('Wrote routes/index.js');
+                expect(normalize(result.output)).to.contain('Wrote routes/index.js');
                 expect(result.errorOutput).to.equal('');
 
                 const contents = await read('ambiguous-hc-file/project-a/routes/index.js');
@@ -214,7 +219,7 @@ describe('hpal', () => {
                 const result = await RunUtil.cli(['make', 'route'], 'non-ambiguous-hc-file-cwd/project-a');
 
                 expect(result.err).to.not.exist();
-                expect(result.output).to.contain('Wrote ../project-b/routes/index.js');
+                expect(normalize(result.output)).to.contain('Wrote ../project-b/routes/index.js');
                 expect(result.errorOutput).to.equal('');
 
                 const contents = await read('non-ambiguous-hc-file-cwd/project-b/routes/index.js');
@@ -238,7 +243,7 @@ describe('hpal', () => {
                 expect(result.err).to.be.instanceof(DisplayError);
                 expect(result.output).to.equal('');
                 expect(result.errorOutput).to.contain('The file');
-                expect(result.errorOutput).to.contain('file-already-exists/routes/some-route.js');
+                expect(normalize(result.errorOutput)).to.contain('file-already-exists/routes/some-route.js');
                 expect(result.errorOutput).to.contain('already exists.');
             });
 
@@ -318,7 +323,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/routes/index.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/routes/index.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('list-as-dir/lib/routes/index.js');
@@ -342,7 +347,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/routes.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/routes.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('list-as-file/lib/routes.js');
@@ -365,7 +370,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/bind/index.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/bind/index.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('single-as-dir/lib/bind/index.js');
@@ -388,7 +393,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/bind.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/bind.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('single-as-file/lib/bind.js');
@@ -431,7 +436,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/bind.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/bind.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('single-as-file/lib/bind.js');
@@ -451,7 +456,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/x.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/x.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('no-example-or-signature/lib/x.js');
@@ -478,7 +483,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/x.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/x.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('no-example-with-signature/lib/x.js');
@@ -509,7 +514,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/x.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/x.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('with-example-and-signature/lib/x.js');
@@ -540,7 +545,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/x.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/x.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('with-example-and-requires/lib/x.js');
@@ -571,7 +576,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/x/index.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/x/index.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('listed-example/lib/x/index.js');
@@ -591,7 +596,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/x/y.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/x/y.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('listed-example/lib/x/y.js');
@@ -619,7 +624,7 @@ describe('hpal', () => {
 
                     const result = await promise;
                     expect(result.err).to.not.exist();
-                    expect(result.output).to.contain('Wrote lib/x.js');
+                    expect(normalize(result.output)).to.contain('Wrote lib/x.js');
                     expect(result.errorOutput).to.equal('');
 
                     const contents = await read('skip-use-strict-header/lib/x.js');
@@ -1392,7 +1397,7 @@ describe('hpal', () => {
 
                 expect(result.err).to.be.instanceof(DisplayError);
                 expect(result.output).to.equal('');
-                expect(result.errorOutput).to.contain(`No server found! To run commands the current project must export { deployment: async () => server } from ${root}/server.`);
+                expect(normalize(result.errorOutput)).to.contain(`No server found! To run commands the current project must export { deployment: async () => server } from ${root}/server.`);
             });
 
             it('errors hard when a bad require happens in the server.', async () => {
@@ -1408,7 +1413,7 @@ describe('hpal', () => {
 
                 expect(result.err).to.be.instanceof(DisplayError);
                 expect(result.output).to.equal('');
-                expect(result.errorOutput).to.contain(`No server found! To run commands the current project must export { deployment: async () => server } from ${root}/server.`);
+                expect(normalize(result.errorOutput)).to.contain(`No server found! To run commands the current project must export { deployment: async () => server } from ${root}/server.`);
             });
 
             it('errors when calling a vanilla or default command that does not exist.', async () => {

@@ -84,9 +84,7 @@ exports.cli = (argv, cwd, colors) => {
         catch (err) {
 
             // Ignore leading and trailing whitespace for testing purposes.
-            // Also switch \ for /, to handle OS-specific differences in paths.
-
-            output = output.replace(/\\/g, '/').trim();
+            output = output.trim();
 
             if (!(err instanceof DisplayError)) {
                 err.output = output;
