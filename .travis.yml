@@ -11,10 +11,6 @@ before_script: |
   if [[ "${TRAVIS_OS_NAME}" == "windows" ]]; then
     git config core.symlinks true
     git reset --hard
-    npm ls
   fi
 
 after_script: "npm run coveralls"
-
-cache:
-  npm: false

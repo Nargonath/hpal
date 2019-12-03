@@ -556,7 +556,7 @@ describe('Print.markdownListItem()', () => {
         ].join('\n'));
     });
 
-    it('prints loose list item.', () => {
+    it.only('prints loose list item.', () => {
 
         const md = [
             '# H1',
