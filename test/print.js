@@ -433,16 +433,16 @@ describe('Print.markdownSection()', () => {
     // In theory it should not affect output since we normalize
     // for colors here, but it does due to limitations of marked-terminal.
 
-    const { level: origLevel } = Chalk;
+    const { enabled: origEnabled } = Chalk;
 
     before(() => {
 
-        Chalk.level = 1;
+        Chalk.enabled = true;
     });
 
     after(() => {
 
-        Chalk.level = origLevel;
+        Chalk.enabled = origEnabled;
     });
 
     const p = Print.markdownSection;
@@ -549,16 +549,16 @@ describe('Print.markdownListItem()', () => {
     // In theory it should not affect output since we normalize
     // for colors here, but it does due to limitations of marked-terminal.
 
-    const { level: origLevel } = Chalk;
+    const { enabled: origEnabled } = Chalk;
 
     before(() => {
 
-        Chalk.level = 1;
+        Chalk.enabled = true;
     });
 
     after(() => {
 
-        Chalk.level = origLevel;
+        Chalk.enabled = origEnabled;
     });
 
     const p = Print.markdownListItem;
