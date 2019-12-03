@@ -1397,7 +1397,7 @@ describe('hpal', () => {
 
                 expect(result.err).to.be.instanceof(DisplayError);
                 expect(result.output).to.equal('');
-                expect(normalize(result.errorOutput)).to.contain(`No server found! To run commands the current project must export { deployment: async () => server } from ${root}/server.`);
+                expect(result.errorOutput).to.contain(`No server found! To run commands the current project must export { deployment: async () => server } from ${Path.join(root, 'server')}.`);
             });
 
             it('errors hard when a bad require happens in the server.', async () => {
@@ -1413,7 +1413,7 @@ describe('hpal', () => {
 
                 expect(result.err).to.be.instanceof(DisplayError);
                 expect(result.output).to.equal('');
-                expect(normalize(result.errorOutput)).to.contain(`No server found! To run commands the current project must export { deployment: async () => server } from ${root}/server.`);
+                expect(result.errorOutput).to.contain(`No server found! To run commands the current project must export { deployment: async () => server } from ${Path.join(root, 'server')}.`);
             });
 
             it('errors when calling a vanilla or default command that does not exist.', async () => {
