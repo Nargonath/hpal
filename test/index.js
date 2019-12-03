@@ -32,6 +32,9 @@ describe('hpal', () => {
 
     const normalize = (str) => {
 
+        // Naively normalizes string output for OS differences:
+        // backslashes to foreslashes (paths) and the OS end-of-line to \n.
+
         return str && str.replace(/\\/g, '/').replace(RegExp(Os.EOL, 'g'), '\n');
     };
 

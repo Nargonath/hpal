@@ -83,8 +83,7 @@ exports.cli = (argv, cwd, colors) => {
         }
         catch (err) {
 
-            // Ignore leading and trailing whitespace for testing purposes.
-            output = output.trim();
+            output = output.trim(); // Ignore leading and trailing whitespace for testing purposes
 
             if (!(err instanceof DisplayError)) {
                 err.output = output;

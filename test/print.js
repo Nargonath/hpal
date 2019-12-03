@@ -430,8 +430,8 @@ describe('Print.markdownSection()', () => {
 
     // We force colors on these tests since they affect the output
     // and Windows CI has colors disabled implicitly via chalk.
-    // In theory it should not affect output since we normalize
-    // for colors here, but it does due to limitations of marked-terminal.
+    // In theory it should not affect output since we normalize for
+    // ansi colors here, but it does due to limitations of marked-terminal.
 
     const { enabled: origEnabled, level: origLevel } = Chalk;
 
@@ -548,8 +548,8 @@ describe('Print.markdownListItem()', () => {
 
     // We force colors on these tests since they affect the output
     // and Windows CI has colors disabled implicitly via chalk.
-    // In theory it should not affect output since we normalize
-    // for colors here, but it does due to limitations of marked-terminal.
+    // In theory it should not affect output since we normalize for
+    // ansi colors here, but it does due to limitations of marked-terminal.
 
     const { enabled: origEnabled, level: origLevel } = Chalk;
 
